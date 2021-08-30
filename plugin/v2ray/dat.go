@@ -3,6 +3,7 @@ package v2ray
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/valyala/gozstd"
 	"log"
 	"os"
 	"path/filepath"
@@ -21,8 +22,8 @@ const (
 )
 
 var (
-	defaultOutputName = "geoip.dat"
-	defaultOutputDir  = filepath.Join("./", "output", "dat")
+	defaultOutputName = "geoip.datx"
+	defaultOutputDir  = filepath.Join("./")
 )
 
 func init() {
@@ -119,8 +120,8 @@ func (g *geoIPDat) Output(container lib.Container) error {
 				if err != nil {
 					return err
 				}
-				filename := strings.ToLower(entry.GetName()) + ".dat"
-				if err := g.writeFile(filename, geoIPBytes); err != nil {
+				filename := strings.ToLower(entry.GetName()) + ".datx"
+				if err := g.writeFile(filename, gozstd.Compress(nil, geoIPBytes)); err != nil {
 					return err
 				}
 				geoIPList.Entry = nil
@@ -146,8 +147,8 @@ func (g *geoIPDat) Output(container lib.Container) error {
 				if err != nil {
 					return err
 				}
-				filename := strings.ToLower(entry.GetName()) + ".dat"
-				if err := g.writeFile(filename, geoIPBytes); err != nil {
+				filename := strings.ToLower(entry.GetName()) + ".datx"
+				if err := g.writeFile(filename, gozstd.Compress(nil, geoIPBytes)); err != nil {
 					return err
 				}
 				geoIPList.Entry = nil
@@ -163,7 +164,7 @@ func (g *geoIPDat) Output(container lib.Container) error {
 		if err != nil {
 			return err
 		}
-		if err := g.writeFile(g.OutputName, geoIPBytes); err != nil {
+		if err := g.writeFile(g.OutputName, gozstd.Compress(nil, geoIPBytes)); err != nil {
 			return err
 		}
 	}

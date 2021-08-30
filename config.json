@@ -22,29 +22,6 @@
     {
       "type": "v2rayGeoIPDat",
       "action": "output"
-    },
-    {
-      "type": "v2rayGeoIPDat",
-      "action": "output",
-      "args": {
-        "outputName": "geoip-only-cn-private.dat",
-        "wantedList": ["cn", "private"]
-      }
-    },
-    {
-      "type": "v2rayGeoIPDat",
-      "action": "output",
-      "args": {
-        "oneFilePerList": true,
-        "wantedList": ["cn", "private", "test"]
-      }
-    },
-    {
-      "type": "text",
-      "action": "output",
-      "args": {
-        "wantedList": ["cn"]
-      }
     }
   ]
 }

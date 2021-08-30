@@ -11,6 +11,7 @@ require (
 require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/pires/go-proxyproto v0.6.0 // indirect
+	github.com/valyala/gozstd v1.12.0 // indirect
 	go.starlark.net v0.0.0-20210602144842-1cdb82c9e17a // indirect
 	go4.org/intern v0.0.0-20210108033219-3eb7198706b2 // indirect
 	go4.org/unsafe/assume-no-moving-gc v0.0.0-20201222180813-1025295fd063 // indirect
