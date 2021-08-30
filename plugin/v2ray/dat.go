@@ -22,7 +22,7 @@ const (
 
 var (
 	defaultOutputName = "geoip.dat"
-	defaultOutputDir  = filepath.Join("./", "output", "dat")
+	defaultOutputDir  = filepath.Join("./")
 )
 
 func init() {
