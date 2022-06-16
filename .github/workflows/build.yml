@@ -42,18 +42,20 @@ jobs:
       - name: Build geoip.dat
         run: |
           go run ./
+          cd ./output/dat || exit 1
+          xz *.dat
 
       - name: Generate sha256 checksum for dat files
         run: |
           cd ./output/dat || exit 1
-          for name in $(ls *.dat); do
+          for name in $(ls *.xz); do
             sha256sum ${name} > ./${name}.sha256sum
           done
 
       - name: Move files to publish directory
         run: |
           mkdir -p publish
-          mv ./output/dat/*.dat ./output/dat/*.sha256sum ./publish
+          mv ./output/dat/*.xz ./output/dat/*.sha256sum ./publish
           cp -fpPR ./output/text ./publish
 
       - name: Git push assets to "release" branch
@@ -79,82 +81,22 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload geoip.dat
+      - name: Upload geoip.dat.xz
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./publish/geoip.dat
-          asset_name: geoip.dat
+          asset_path: ./publish/geoip.dat.xz
+          asset_name: geoip.dat.xz
           asset_content_type: application/octet-stream
 
-      - name: Upload geoip.dat.sha256sum
+      - name: Upload geoip.dat.xz.sha256sum
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./publish/geoip.dat.sha256sum
-          asset_name: geoip.dat.sha256sum
-          asset_content_type: text/plain
-
-      - name: Upload geoip-only-cn-private.dat
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./publish/geoip-only-cn-private.dat
-          asset_name: geoip-only-cn-private.dat
-          asset_content_type: application/octet-stream
-
-      - name: Upload geoip-only-cn-private.dat.sha256sum
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./publish/geoip-only-cn-private.dat.sha256sum
-          asset_name: geoip-only-cn-private.dat.sha256sum
-          asset_content_type: text/plain
-
-      - name: Upload cn.dat
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./publish/cn.dat
-          asset_name: cn.dat
-          asset_content_type: application/octet-stream
-
-      - name: Upload cn.dat.sha256sum
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./publish/cn.dat.sha256sum
-          asset_name: cn.dat.sha256sum
-          asset_content_type: text/plain
-
-      - name: Upload private.dat
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./publish/private.dat
-          asset_name: private.dat
-          asset_content_type: application/octet-stream
-
-      - name: Upload private.dat.sha256sum
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./publish/private.dat.sha256sum
-          asset_name: private.dat.sha256sum
+          asset_path: ./publish/geoip.dat.xz.sha256sum
+          asset_name: geoip.dat.xz.sha256sum
           asset_content_type: text/plain
